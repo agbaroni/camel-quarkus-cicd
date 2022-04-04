@@ -5,8 +5,10 @@ metadata:
   name: camel-quarkus-tests
   namespace: openshift-gitops
 spec:
+  clusterResourceWhitelist:
+    - group: project.openshift.io/v1
+      kind: Project
   destinations:
-    - name: eklexis
-      server: 'https://api.ocp.eklexis.org:6443'
+    - server: 'https://api.ocp.eklexis.org:6443'
   sourceRepos:
     - 'https://github.com/agbaroni/camel-quarkus-application.git'
