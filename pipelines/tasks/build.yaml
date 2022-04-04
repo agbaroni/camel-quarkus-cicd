@@ -1,0 +1,26 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: build
+  namespace: cqa
+spec:
+  steps:
+    - args:
+        - '-s'
+        - '$(workspaces.sources.path)/configuration/settings.xml'
+        - '-D'
+        - 'maven.repo.local=$(workspaces.maven.path)'
+        - '-D'
+        - 'buildDirectory=$(workspaces.target.path)'
+        - clean
+        - package
+      command: /usr/bin/mvn
+      image: registry.redhat.io/ubi8/openjdk-11:latest
+  workspaces:
+    - name: maven
+      mountPath: /home/jboss/maven
+    - name: sources
+      mountPath: /home/jboss/sources
+    - name: target
+      mountPath: /home/jboss/target

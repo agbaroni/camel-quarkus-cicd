@@ -1,0 +1,13 @@
+---
+kind: Application
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: camel-quarkus-tests
+  namespace: openshift-gitops
+spec:
+  destination:
+    name: eklexis
+  project: camel-quarkus-tests
+  source:
+    path: gitops/cluster
+    repoURL: 'https://github.com/agbaroni/camel-quarkus-application.git'

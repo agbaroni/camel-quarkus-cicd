@@ -1,0 +1,25 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: clone
+  namespace: cqa
+spec:
+  steps:
+    - args:
+        - '-y'
+        - install
+        - git
+      command:
+        - /usr/bin/dnf
+      image: registry.redhat.io/ubi8/ubi:latest
+    - args:
+        - clone
+        - 'https://github.com/agbaroni/camel-quarkus-application.git'
+        - '$(workspaces.sources.path)'
+      command:
+        - /usr/bin/git
+      image: registry.redhat.io/ubi8/ubi:latest
+  workspaces:
+    - name: sources
+      mountPath: /home/jboss/sources

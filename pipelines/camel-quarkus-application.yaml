@@ -1,0 +1,58 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: camel-quarkus-application
+  namespace: cqa
+spec:
+  tasks:
+    - name: check
+      taskRef:
+        name: check
+      workspaces:
+        - name: sources
+          workspace: sources
+    - name: clone
+      runAfter:
+        - check
+      taskRef:
+        name: clone
+      workspaces:
+        - name: sources
+          workspace: sources
+      when:
+        - input: '$(tasks.check.results.cloned)'
+          operator: in
+          values:
+            - 'no'
+    - name: pull
+      taskRef:
+        name: pull
+      workspaces:
+        - name: sources
+          workspace: sources
+      when:
+        - input: '$(tasks.clone.results.cloned)'
+          operator: in
+          values:
+            - 'yes'
+    - name: build
+      taskRef:
+        name: build
+      workspaces:
+        - name: maven
+          workspace: maven
+        - name: sources
+          workspace: sources
+        - name: target
+          workspace: target
+    # - name: push
+    #   taskRef:
+    #     name: push
+    #     workspaces:
+    #       - name: target
+    #         workspace: target
+  workspaces:
+    - name: maven
+    - name: sources
+    - name: target

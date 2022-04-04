@@ -1,0 +1,19 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: camel-quarkus-application
+  namespace: cqa
+spec:
+  pipelineRef:
+    name: camel-quarkus-application
+  workspaces:
+    - name: maven
+      persistentVolumeClaim:
+        claimName: maven
+    - name: sources
+      persistentVolumeClaim:
+        claimName: sources
+    - name: target
+      persistentVolumeClaim:
+        claimName: target

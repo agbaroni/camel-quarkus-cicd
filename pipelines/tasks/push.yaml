@@ -1,0 +1,18 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: build
+  namespace: cqa
+spec:
+  steps:
+    - args:
+        - '-s'
+        - '$(workspaces.sources.path)/configuration/settings.xml'
+        - clean
+        - package
+      command: /usr/bin/mvn
+      image: registry.redhat.io/ubi8/openjdk-11:latest
+  workspaces:
+    - name: sources
+      mountPath: /home/jboss/sources

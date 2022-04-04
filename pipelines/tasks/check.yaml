@@ -1,0 +1,22 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: check
+  namespace: cqa
+spec:
+  results:
+    - name: cloned
+  steps:
+    - script: |
+        #!/bin/sh
+        set -e
+        if [ -z "$(ls -A $(workspaces.sources.path))" ]; then
+          echo -n no > $(results.cloned.path)
+        else
+          echo -n yes > $(results.cloned.path)
+        fi
+      image: registry.redhat.io/ubi8/ubi:latest
+  workspaces:
+    - name: sources
+      mountPath: /home/jboss/sources
