@@ -3,7 +3,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: target
-  namespace: cqa
+  namespace: camel-quarkus-tests
 spec:
   accessModes:
     - ReadWriteOnce
