@@ -1,13 +1,17 @@
+# Manually add Repositories in the ArgoCD console before applying this file
 ---
-kind: Application
 apiVersion: argoproj.io/v1alpha1
+kind: Application
 metadata:
   name: camel-quarkus-tests
   namespace: openshift-gitops
 spec:
   destination:
-    name: eklexis
+    server: 'https://kubernetes.default.svc'
   project: camel-quarkus-tests
   source:
+    directory:
+      recurse: true
     path: gitops/cluster
-    repoURL: 'https://github.com/agbaroni/camel-quarkus-application.git'
+    repoURL: 'https://github.com/agbaroni/camel-quarkus-manifests'
+    targetRevision: HEAD
